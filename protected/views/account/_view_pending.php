@@ -17,7 +17,7 @@
         <span class="fa fa-info" style="margin-right:3px;"></span>
       </a>';
 
-      if($user_position == 13 || $user_position == 11)
+      if($user_position == 13 || $user_position == 11 || $data->chairman_id == Yii::app()->user->id)
       {
         echo CHtml::link('<span class="fa fa-pencil" style="margin-right:3px;"></span>', array('/account/editreport', 'id' => $data->id), array('title' => 'Edit Report', 'target'=>'_blank', 'style'=>'margin-right:3px;'));
 			}
@@ -25,7 +25,7 @@
       if($display_actions_status)
       {
         //if($user_position == 9){ // activate for RVP only
-        if($user_position == 8) { //AVP ONLY
+        //if($user_position == 8) { //AVP ONLY
         //if($user_position == 9 OR $user_position == 8) { //AVP & RVP ONLY
         //if($user_position != 13){ // for AVP, RVP, Pres
         //if($user_position == 11){ // Pres only
@@ -33,7 +33,7 @@
           echo '<a href="#rejectModal-'.CHtml::encode($data->id).'" data-toggle="modal" data-target="#rejectModal-'.CHtml::encode($data->id).'" style="margin-right:3px;" title="Reject Report">
               <span class="fa fa-remove" style="margin-right:3px;"></span>
             </a>';
-        }
+        // }
 		  }
 
       if($user_position == 13 || $user_position == 11)

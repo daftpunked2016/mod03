@@ -118,4 +118,67 @@ class SiteController extends Controller
 		Yii::app()->user->setFlash('success','You have successfully logged out your account.');
 		$this->redirect('login');
 	}
+
+	public function actionDashboard()
+	{
+		$user = User::model()->find(array('condition'=>'account_id = :id', 'params'=>array(':id'=>Yii::app()->user->id)));
+		$categories = PeaCategory::model()->findAll();
+
+		switch ($user->position_id) {
+			case 8:
+				// AVP
+				$ano = $user->chapter->area_no;
+				$regions = AreaRegion::model()->findAll(array('condition'=>'area_no = :ano', 'params'=>array(':ano'=>$ano)));
+				$regionsDP=new CArrayDataProvider($regions, array(
+					'pagination' => array(
+						'pageSize' => 10
+					),
+				));
+
+				$this->render('avp_dashboard', array(
+					'regionsDP'=>$regionsDP,
+					'ano'=>$ano,
+				));
+				break;
+			case 9:
+				// RVP
+				$rid = $user->chapter->region_id;
+				$region = AreaRegion::model()->findByPk($rid);
+				$chapters = Chapter::model()->findAll(array('condition'=>'region_id = :rid', 'params'=>array(':rid'=>$rid)));
+				$chaptersDP=new CArrayDataProvider($chapters, array(
+					'pagination' => array(
+						'pageSize' => 20
+					),
+				));
+
+				$this->render('rvp_dashboard', array(
+					'chaptersDP'=>$chaptersDP,
+					'region'=>$region,
+				));
+				break;
+			default:
+				// PRES
+				$this->render('pres_dashboard', array(
+					'user'=>$user,
+					'categories'=>$categories,
+				));
+				break;
+		}
+	}
+
+	public function actionChapterReport($rid)
+	{
+		$region = AreaRegion::model()->findByPk($rid);
+		$chapters = Chapter::model()->findAll(array('condition'=>'region_id = :rid', 'params'=>array(':rid'=>$rid)));
+		$chaptersDP=new CArrayDataProvider($chapters, array(
+			'pagination' => array(
+				'pageSize' => 20
+			),
+		));
+
+		$this->render('chapterreport', array(
+			'chaptersDP'=>$chaptersDP,
+			'region'=>$region,
+		));
+	}
 }

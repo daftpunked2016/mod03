@@ -160,7 +160,7 @@
 				<?php
 					if ($user_position == 11) {
 						$date_label = "Date Uploaded";
-					}else{
+					} else {
 						$date_label = "Date Approved";
 					}
 				?>

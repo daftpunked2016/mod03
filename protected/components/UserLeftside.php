@@ -15,10 +15,19 @@ class UserLeftside extends CWidget
 		$fileupload = Fileupload::model()->findByPk($account->user->user_avatar);
 		$user_avatar = $fileupload->filename;
 
-		$this->render("userLeftside",array(
-			'user_avatar' => $user_avatar,
-			'user'=>$account->user,
-		));
+		if($account->user->position_id == 8 || $account->user->position_id == 9 || $account->user->position_id == 11 || $account->user->position_id == 13) {
+			$this->render("userLeftside",array(
+				'user_avatar' => $user_avatar,
+				'user'=>$account->user,
+			));
+		} else {
+			$this->render('writerLeftside', array(
+				'user_avatar' => $user_avatar,
+				'user'=>$account->user,
+			));
+		}
+
+		
 	}
 }
 ?>

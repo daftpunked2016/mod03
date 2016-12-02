@@ -279,15 +279,15 @@ class AccountController extends Controller
 		$account = Account::model()->findByPk($account_id);
 
 		if($report != null) { //USER CHAPTER VALIDATION FOR REPORT EDITING
-			$user_chapter = Chapter::model()->findByPk($account->user->chapter_id);
+			// $user_chapter = Chapter::model()->findByPk($account->user->chapter_id);
 
-			if($account->user->position_id == 11 || $account->user->position_id == 13) {
+			// if($account->user->position_id == 11 || $account->user->position_id == 13) {
 				if($account->user->chapter_id != $report->chapter_id) {
 					$this->redirect(array('account/index'));
 				}
-			} else {
-				$this->redirect(array('account/index'));
-			}
+			// } else {
+			// 	$this->redirect(array('account/index'));
+			// }
 		} else {
 			$this->redirect(array('account/index'));
 		}
@@ -333,6 +333,8 @@ class AccountController extends Controller
 						if($account_id == $president->account_id) {
 							$report->date_upload = date('Y-m-d H:i:s');
 							$report->status_id = 3; //APPROVED BY PRES -> PENDING NOW TO RVP
+						} else if($account_id == $report->chairman_id) {
+							$report->status_id = 7; // PENDING TO SECRETARY
 						} else {
 							$report->status_id = 4; // PENDING TO PRES
 						}
@@ -342,7 +344,7 @@ class AccountController extends Controller
 
 			if ($_POST['date_completed'] == '') {
 				$date_completed = null;
-			}else{
+			} else {
 				$date_completed = $_POST['date_completed'];
 			}
 
@@ -680,12 +682,18 @@ class AccountController extends Controller
 		$account_id =  Yii::app()->user->id;
 		$this->verifyAccount($account_id);
 
-		if($topdf!=null)
-		{
+		if ($topdf!=null) {
 			$this->layout='//layouts/pdf';
 		}
 
 		$user = User::model()->find('account_id = '.$account_id);
+		$pos_arr = [1=>'8', 2=>'9', 3=>'11', 4=>'13'];
+
+		// redirect writer
+		if(!array_search($user->position_id, $pos_arr)) {
+			$this->redirect(array('account/viewreports', 'st'=>'p'));
+		}
+
 		$pea_categories = PeaCategory::model()->findAll();
 		$pea_subcat = PeaSubcat::model()->findAll();
 		$cat_code = array("A", "B", "C");
@@ -805,7 +813,6 @@ class AccountController extends Controller
 	public function actionViewReports($st)
 	{
 		$account_id =  Yii::app()->user->id;
-		$display_actions_status =  true;
 		$subheader = '';
 		$layout = '';
 
@@ -815,11 +822,29 @@ class AccountController extends Controller
 		$chapter = Chapter::model()->findByPk($user->chapter_id);
 		$pos = $user->position_id;
 
-		if($pos == 8)
-		{
-			$display_actions_status = $this->verifyAvpActions();
-		}
+		$settings = PeaSettings::model()->find();
 
+		if($pos == 11 || $pos == 13) { //SEC AND PRES
+			if ($settings->pres_approval == 1) {
+				$display_actions_status =  true;
+			} else {
+				$display_actions_status =  false;
+			}
+		} else if($pos == 8) { // AVP
+			if ($settings->avp_approval == 1) {
+				$display_actions_status =  true;
+			} else {
+				$display_actions_status =  false;
+			}
+		} else if($pos == 9) { // RVP
+			if ($settings->rvp_approval == 1) {
+				$display_actions_status =  true;
+			} else {
+				$display_actions_status =  false;
+			}
+		} else {
+			$display_actions_status = false;
+		}
 
 		switch($st) {
 			case "p":
@@ -884,6 +909,14 @@ class AccountController extends Controller
 						$reports = PeaReports::model()->isPending()->findAll($search2);
 						$subheader = "Reports for Approval in your Chapter";
 					break;
+
+					default:
+						// FOR PROJECT CHAIRMAN
+						$search2['order'] = 'date_upload ASC';
+						$search2['condition'] = 'chairman_id = '.$user->account_id.' AND status_id = 7';
+						$reports = Peareports::model()->findAll($search2);
+						$subheader = "Reports for Assigned to you";
+					break;
 				}
 
 				$layout = 'view-pending';
@@ -945,6 +978,13 @@ class AccountController extends Controller
 						$search2['order'] = 'date_upload DESC';
 						$search2['condition'] = 'chapter_id = '.$user->chapter_id;
 						$reports = PeaReports::model()->isApprovedAll()->findAll($search2);
+					break;
+
+					default:
+						// FOR PROJECT CHAIRMAN
+						$search2['order'] = 'date_upload DESC';
+						$search2['condition'] = 'chairman_id = '.$user->account_id.' AND status_id NOT IN (5,6,7)';
+						$reports = PeaReports::model()->findAll($search2);
 					break;
 				}
 
@@ -1008,6 +1048,13 @@ class AccountController extends Controller
 						$search2['condition'] = 'chapter_id = '.$user->chapter_id;
 						$reports = PeaReports::model()->isRejected()->findAll($search2);
 					break;
+
+					default:
+						// FOR PROJECT CHAIRMAN
+						$search2['order'] = 'date_upload DESC';
+						$search2['condition'] = 'chairman_id = '.$user->account_id;
+						$reports = PeaReports::model()->isRejected()->findAll($search2);
+					break;
 				}
 
 				$layout = 'view-rejected';
@@ -1020,9 +1067,24 @@ class AccountController extends Controller
 						$search2['condition'] = 'chapter_id = '.$user->chapter_id.' AND account_id = '.Yii::app()->user->id;
 						$reports = PeaReports::model()->isDraft()->findAll($search2);
 					break;
+
+					default:
+						$search2['order'] = 'date_upload DESC';
+						$search2['condition'] = 'chairman_id = '.$user->account_id;
+						$reports = PeaReports::model()->isDraft()->findAll($search2);
+					break;
 				}
 
 				$layout = 'view-drafts';
+				break;
+
+			case 'c':
+				if ($pos == 13) {
+					$search2['order'] = 'date_upload DESC';
+					$search2['condition'] = 'chapter_id = '.$user->chapter_id;
+					$reports = PeaReports::model()->isProjectChair()->findAll($search2);
+				}
+				$layout = 'view-chairs';
 				break;
 		}
 
@@ -1064,8 +1126,6 @@ class AccountController extends Controller
 		$this->redirect('index'); 
 	}
 
-	
-
 	public function actionApproveReport($id, $st)
 	{
 		$report = PeaReports::model()->findByPk($id);
@@ -1075,6 +1135,8 @@ class AccountController extends Controller
 		{
 			if($user->position_id == 8 || $user->position_id == 9) {
 				$status = 2;
+			} else if($user->position_id == 13) {
+				$status = 4; // PENDING TO PRESIDENT
 			} else {
 				if($user->position_id == 11) {
 					$report->date_upload = date('Y-m-d H:i:s');
@@ -1090,10 +1152,11 @@ class AccountController extends Controller
 				$transaction = new PeaTransactions;
 				$transaction->generateLog($id, $report->account_id, 1, PeaTransactions::TYPE_APPROVE_REPORT);
 
-				if($report->status_id == 2)
-				{
+				if($report->status_id == 2) {
 					Yii::app()->user->setFlash('success','Please wait for the approval of NSG.');
-				}else{
+				} else if($report->status_id == 4) {
+					Yii::app()->user->setFlash('success','Please wait for the approval of your LO President.');
+				} else {
 					Yii::app()->user->setFlash('success','You have successfully approved this report and will now be submitted to your respective RVP.');
 				}
 				
@@ -1297,10 +1360,10 @@ class AccountController extends Controller
 			{
 				//$user = User::model()->find('account_id = '.$account->id);
 
-				if($account->user->position_id == 8 || $account->user->position_id == 9 || $account->user->position_id == 11 || $account->user->position_id == 13)
-				{
+				// if($account->user->position_id == 8 || $account->user->position_id == 9 || $account->user->position_id == 11 || $account->user->position_id == 13)
+				// {
 					return true;
-				}
+				// }
 			}
 		}
 

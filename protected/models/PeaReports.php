@@ -111,6 +111,10 @@ class PeaReports extends CActiveRecord
 			'isDraft' => array(
 				'condition' => 't.status_id = 6',
 			),
+
+			'isProjectChair' => array(
+				'condition' => 't.status_id = 7',
+			),
 		);
 	}
 
@@ -209,6 +213,7 @@ class PeaReports extends CActiveRecord
 	{
 		$user = User::model()->find('account_id = '.Yii::app()->user->id);
 		$pos = $user->position_id;
+		$count = 0;
 
 		switch($st) {
 			case "p":
@@ -231,6 +236,11 @@ class PeaReports extends CActiveRecord
 
 					case 11:
 						$count = PeaReports::model()->isPending()->count('chapter_id = '.$user->chapter_id);
+					break;
+
+					default:
+						// PROJECT CHAIRMAN
+						$count = PeaReports::model()->count(array('condition' => 'chairman_id = :id AND status_id = 7', 'params'=>array(':id'=>$user->account_id)));
 					break;
 				}
 				break;
@@ -256,6 +266,11 @@ class PeaReports extends CActiveRecord
 					case 11:
 						$count = PeaReports::model()->isApprovedAll()->count('chapter_id = '.$user->chapter_id);
 					break;
+
+					default:
+						// PROJECT CHAIRMAN
+						$count = PeaReports::model()->count(array('condition' => 'chairman_id = :id AND status_id <> 7', 'params'=>array(':id'=>$user->account_id)));
+					break;
 				}
 				break;
 			case "r":
@@ -280,10 +295,24 @@ class PeaReports extends CActiveRecord
 					case 11:
 						$count = PeaReports::model()->isRejected()->count('chapter_id = '.$user->chapter_id);
 					break;
+
+					default:
+						// PROJECT CHAIRMAN
+						$count = PeaReports::model()->isRejected()->count('chairman_id ='.$user->account_id);
+					break;
 				}
 				break;
 			case "d":
-				$count = PeaReports::model()->isDraft()->count('chapter_id = '.$user->chapter_id.' AND account_id = '.Yii::app()->user->id);
+				if($pos == 11 || $pos == 13) {
+					$count = PeaReports::model()->isDraft()->count('chapter_id = '.$user->chapter_id.' AND account_id = '.Yii::app()->user->id);
+				} else {	
+					$count = PeaReports::model()->isDraft()->count('chapter_id = '.$user->chapter_id.' AND chairman_id = '.Yii::app()->user->id);
+				}
+			case 'c':
+				if ($pos == 13) {
+					$count = PeaReports::model()->isProjectChair()->count('chapter_id = '.$user->chapter_id);
+				}
+				break;
 		}
 
 		return $count;
@@ -361,5 +390,16 @@ class PeaReports extends CActiveRecord
 		}
 
 		return $count;
+	}
+
+	public function getProjects($chairman_id)
+	{
+		$count = $this::model()->count(array('condition'=>'chairman_id = :id', 'params'=>array(':id'=>$chairman_id)));
+
+		if ($count != 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

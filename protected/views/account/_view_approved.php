@@ -6,12 +6,15 @@
 	<td><?php echo CHtml::encode(date('F d, Y h:i:s A', strtotime($data->date_upload))); ?></td>
   <td>
     <?php 
-      if($data->status_id == 1)
+      if($data->status_id == 1) {
         echo "<b>APPROVED BY NSG</b>";
-      else if($data->status_id == 2)
+      } else if($data->status_id == 2) {
         echo "<b>Approved by RVP</b>";
-      else
+      } else if($data->status_id == 4) {
+        echo "<i>Approved by Sec.</i>";
+      } else {
         echo "<i>Approved by Pres.</i>";
+      }
     ?>
   </td>
 	<td>

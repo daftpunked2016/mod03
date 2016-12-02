@@ -98,7 +98,7 @@ $(function () {
 	<section class="content">
 		<div class="row">
 			<h2 style="margin-left:30px; margin-right:30px;"> 
-				<i class="fa fa-bar-chart" style="margin-right:10px;"></i>Performance Snapshot <small>JCI <?php echo $chapter->chapter; ?></small>
+				<i class="fa fa-bar-chart" style="margin-right:10px;"></i>Performance Snapshot <small><?php echo $chapter->chapter; ?></small>
 				<?php if($topdf == null): ?>
 					<span class="pull-right hidden-sm hidden-xs" style="font-size:100%">
 						<a href="?topdf=1" class="btn btn-primary btn-xs"><i class="fa fa-print" style="margin-right:5px;"></i>Print Page</a>

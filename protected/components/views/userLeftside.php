@@ -1,106 +1,127 @@
-
 <!-- Left side column. contains the logo and sidebar -->
-      <aside class="main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-          <!-- Sidebar user panel -->
-          <div class="user-panel" style="margin-bottom:20px;">
-            <div class="pull-left image">
-              <img src="http://www.jci.org.ph/mod02/user_avatars/<?php echo $user_avatar; ?>" class="img-circle" alt="User Image" />
-            </div>
-            <div class="pull-left info">
-              <p><?php echo User::model()->getCompleteName(); ?></p>
+<aside class="main-sidebar">
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+    <!-- Sidebar user panel -->
+    <div class="user-panel" style="margin-bottom:20px;">
+      <div class="pull-left image">
+        <img src="http://www.jci.org.ph/mod02/user_avatars/<?php echo $user_avatar; ?>" class="img-circle" alt="User Image" />
+      </div>
+      <div class="pull-left info">
+        <p><?php echo User::model()->getCompleteName(); ?></p>
 
-              <small>JCI Philippines</small>
-            </div>
-          </div>
+        <small>JCI Philippines</small>
+      </div>
+    </div>
 
-          <ul class="sidebar-menu">
-            <li class="header">NAVIGATION</li>
-            <?php if($user->position_id == 11 || $user->position_id == 13): ?>
-            <!-- <li>
-              <a href="<?php //echo Yii::app()->request->baseUrl; ?>/index.php/account/submitreport">
-                <i class="fa fa-upload"></i> <span>Submit Report</span>
-              </a>
-            </li> -->
-            <?php endif; ?>
+    <ul class="sidebar-menu">
+      <li class="header">NAVIGATION</li>
+      <!-- DASHBOARDS FOR PRES, RVP & AVP -->
+      <?php if($user->position_id == 11 || $user->position_id == 8 || $user->position_id == 9): ?>
+      <li>
+        <?php echo CHtml::link('<span class="fa fa-dashboard"></span> Dashboard', array('site/dashboard')); ?>
+      </li>
+      <?php endif; ?>
 
-              <li class="treeview">
-                <a href="#">
-                  <i class="fa fa-file"></i> <span>Reports</span> <i class="fa fa-angle-left pull-right"></i>
-                  <?php 
-                    $pcount = PeaReports::model()->countReports('p');
-                    $rcount = PeaReports::model()->countReports('r');  
-                    $acount = PeaReports::model()->countReports('a');
-                    $dcount = PeaReports::model()->countReports('d');
+      <?php if($user->position_id == 11 || $user->position_id == 13): ?>
+      <li>
+        <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/submitreport">
+          <i class="fa fa-upload"></i> <span>Submit Report</span>
+        </a>
+      </li>
+      <?php endif; ?>
 
-                    if($user->position_id != 13){
-                      if($pcount != 0)
-                        echo '<span class="badge" style="background-color:#0000FF; margin-left:3px;">!</span>'; 
-                    }
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-file"></i> <span>Reports</span> <i class="fa fa-angle-left pull-right"></i>
+            <?php 
+              $pcount = PeaReports::model()->countReports('p');
+              $rcount = PeaReports::model()->countReports('r');  
+              $acount = PeaReports::model()->countReports('a');
+              $dcount = PeaReports::model()->countReports('d');
+              $ccount = PeaReports::model()->countReports('c');
 
-                    if($rcount != 0)
-                      echo '<span class="badge" style="background-color:#FF0000; margin-left:3px;">!</span>';
+              if($user->position_id != 13){
+                if($pcount != 0)
+                  echo '<span class="badge" style="background-color:#0000FF; margin-left:3px;">!</span>'; 
+              }
+
+              if($rcount != 0)
+                echo '<span class="badge" style="background-color:#FF0000; margin-left:3px;">!</span>';
+            ?>
+          </a>
+
+          <ul class="treeview-menu">
+            <?php if ($user->position_id == 13): ?>
+              <li>
+                 <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/viewreports?st=c">
+                  <i class="fa fa-folder-o"></i><span style="margin-right:5px;">Project Chairs</span>
+                  <?php
+                    if($ccount == 0)
+                      echo '<span class="badge">0</span>';
+                    else
+                      echo '<span class="badge">'.$ccount.'</span>';
                   ?>
                 </a>
-
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/viewreports?st=p">
-                      <i class="fa fa-question"></i><span style="margin-right:5px;">Pending</span>
-                      <?php 
-                        if($user->position_id != 13){
-                          if($pcount == 0)
-                            echo '<span class="badge">0</span>';
-                          else
-                          echo '<span class="badge" style="background-color:#0000FF;">'.$pcount.'</span>';
-                        }
-                      ?>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/viewreports?st=a">
-                      <i class="fa fa-check"></i><span style="margin-right:5px;">Approved</span>
-                      <?php 
-                        echo '<span class="badge"  style="background-color:#32CD32;">'.$acount.'</span>';
-                      ?>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/viewreports?st=r">
-                      <i class="fa fa-times"></i><span style="margin-right:5px;">Rejected</span>
-                      <?php
-                        if($rcount == 0)
-                          echo '<span class="badge">0</span>';
-                        else
-                          echo '<span class="badge" style="background-color:#FF0000;">'.$rcount.'</span>';
-                      ?>
-                    </a>
-                  </li>
-
-                  <?php if($user->position_id == 11 || $user->position_id == 13): ?>
-                  <li>
-                     <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/viewreports?st=d">
-                      <i class="fa fa-folder-o"></i><span style="margin-right:5px;">My Drafts</span>
-                      <?php
-                        if($dcount == 0)
-                          echo '<span class="badge">0</span>';
-                        else
-                          echo '<span class="badge">'.$dcount.'</span>';
-                      ?>
-                    </a>
-                  </li>
-                  <?php endif; ?>
-                </ul>
               </li>
-            
+            <?php endif; ?>
 
             <li>
-              <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/listscoring">
-                <i class="fa fa-bar-chart"></i> <span>Status Score</span>
+              <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/viewreports?st=p">
+                <i class="fa fa-question"></i><span style="margin-right:5px;">Pending</span>
+                <?php 
+                  if($user->position_id != 13){
+                    if($pcount == 0)
+                      echo '<span class="badge">0</span>';
+                    else
+                    echo '<span class="badge" style="background-color:#0000FF;">'.$pcount.'</span>';
+                  }
+                ?>
               </a>
             </li>
+            <li>
+              <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/viewreports?st=a">
+                <i class="fa fa-check"></i><span style="margin-right:5px;">Approved</span>
+                <?php 
+                  echo '<span class="badge"  style="background-color:#32CD32;">'.$acount.'</span>';
+                ?>
+              </a>
+            </li>
+            <li>
+              <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/viewreports?st=r">
+                <i class="fa fa-times"></i><span style="margin-right:5px;">Rejected</span>
+                <?php
+                  if($rcount == 0)
+                    echo '<span class="badge">0</span>';
+                  else
+                    echo '<span class="badge" style="background-color:#FF0000;">'.$rcount.'</span>';
+                ?>
+              </a>
+            </li>
+
+            <?php if($user->position_id == 11 || $user->position_id == 13): ?>
+            <li>
+               <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/viewreports?st=d">
+                <i class="fa fa-folder-o"></i><span style="margin-right:5px;">My Drafts</span>
+                <?php
+                  if($dcount == 0)
+                    echo '<span class="badge">0</span>';
+                  else
+                    echo '<span class="badge">'.$dcount.'</span>';
+                ?>
+              </a>
+            </li>
+            <?php endif; ?>
           </ul>
-        </section>
-        <!-- /.sidebar -->
-      </aside>
+        </li>
+      
+
+      <li>
+        <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/listscoring">
+          <i class="fa fa-bar-chart"></i> <span>Status Score</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /.sidebar -->
+</aside>

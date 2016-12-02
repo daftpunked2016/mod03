@@ -117,7 +117,7 @@ class Account extends CActiveRecord
 
 			'isAuth' => array(
 				'join' => 'INNER JOIN jci_user AS u ON t.id = u.account_id',
-				'condition' => 'u.position_id IN (11, 13, 8, 9)',	
+				'condition' => 'u.position_id IN (11, 13, 8, 9)',
 			),
 
 			'isAuth2' => array(

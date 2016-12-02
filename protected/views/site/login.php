@@ -57,7 +57,7 @@
     <?php $this->endWidget(); ?>
     <br></br>
     <div class="row text-center">
-      <small><i>* Note: Only <strong>LO President</strong>, <strong>LO Secretary</strong>, <strong>RVP</strong> and <strong>AVP</strong> can log in this page. *</i></small>
+      <small><i>* Note: Only <strong>LO President</strong>, <strong>LO Secretary</strong>, <strong>Project Chairman</strong>, <strong>RVP</strong> and <strong>AVP</strong> can log in this page. *</i></small>
     </div>
 
     <div class="row">

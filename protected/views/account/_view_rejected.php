@@ -21,7 +21,7 @@
         <span class="fa fa-info" style="margin-right:3px;"></span>
       </a>';
 
-      if($pos == 13 || $pos == 11)
+      if($pos == 13 || $pos == 11 || $data->chairman_id == Yii::app()->user->id)
       {
         echo CHtml::link('<span class="fa fa-pencil" style="margin-right:3px;"></span>', array('/account/editreport', 'id' => $data->id, 'rejected' => 1), array('title' => 'Edit Report', 'target'=>'_blank', 'style'=>'margin-right:3px;'));
 			}

@@ -22,38 +22,27 @@ class UserIdentity extends CUserIdentity
 	{
 		$username=strtolower($this->username);
        
-	   	$user=Account::model()->isActive()->isAuth()->find('LOWER(username)="'.$username.'" AND (account_type_id = 2 OR account_type_id = 3)');
+	   	$user = Account::model()->isActive()->find('LOWER(username)="'.$username.'" AND (account_type_id = 2 OR account_type_id = 3)');
 		$userinactive = Account::model()->isInactive()->find('LOWER(username)="'.$username.'" AND (account_type_id = 2 OR account_type_id = 3)');
 		$userinactivepause = Account::model()->isInactivePause()->find('LOWER(username)="'.$username.'" AND (account_type_id = 2 OR account_type_id = 3)');
-		// $userreset = Account::model()->isReset()->find('LOWER(username)="'.$username.'" AND (account_type_id = 2 OR account_type_id = 3)');
-		
- 	    if($user==null && $userinactive==null && $userinactivepause==null /*&& $userreset==null*/)
-            Yii::app()->user->setFlash('error', 'Account not available or invalid!');
-		else if($userinactive!=null || $userinactivepause!=null)
-			Yii::app()->user->setFlash('error', 'Account is inactive! Please verify your e-mail address first.');
-		// else if($userreset != null)
-		// {
-		// 	$this->_id=$userreset->id;
-		  //$this->username=$userreset->username;
-		  //$this->errorCode=self::ERROR_NONE;
-		// }
-        else if(!$user->validatePassword($this->password))
-       	{ 
+
+ 	    if($user==null && $userinactive==null && $userinactivepause==null) {
+			Yii::app()->user->setFlash('error', 'Account not available or invalid!');
+ 	    } else if($userinactive!=null || $userinactivepause!=null) {
+ 	    	Yii::app()->user->setFlash('error', 'Account is inactive! Please verify your e-mail address first.');
+ 	    } else if(!$user->validatePassword($this->password)) { 
        		$this->errorCode=self::ERROR_PASSWORD_INVALID;
 			Yii::app()->user->setFlash('error', 'Email / Password invalid!'); 
-		}
-        else
-        {
+		} else {
       		$user_details = User::model()->find('account_id = '.$user->id);
 
-      		if($user_details->position_id == 8 || $user_details->position_id == 9 || $user_details->position_id == 11 || $user_details->position_id == 13)
-      		{
-	            $this->_id=$user->id;
+      		if($user_details->position_id == 8 || $user_details->position_id == 9 || $user_details->position_id == 11 || $user_details->position_id == 13 || PeaReports::model()->getProjects($user_details->account_id)) {
+      			$this->_id=$user->id;
 	            $this->username=$user->username;
 	            $this->errorCode=self::ERROR_NONE;
-           	}
-           	else
+           	} else {
            		Yii::app()->user->setFlash('error', 'Account not available or invalid!');
+           	}
         }
 		
         return $this->errorCode==self::ERROR_NONE;

@@ -29,6 +29,7 @@ class DefaultController extends Controller
 
 		$this->render('regionreport', array(
 			'regionsDP'=>$regionsDP,
+			'ano'=>$ano,
 		));
 	}
 

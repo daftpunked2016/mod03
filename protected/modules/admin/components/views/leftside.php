@@ -68,7 +68,7 @@
         </ul>
       </li>
 
-       <!-- Scorecards -->
+      <!-- Scorecards -->
       <li>
         <a href="<?php echo Yii::app()->baseUrl; ?>/index.php/admin/default/selectchapter">
           <i class="fa fa-bar-chart"></i>
@@ -88,15 +88,16 @@
     <!-- activae / deactivate AVP -->
     <div style="position:absolute; bottom:0px; width:100%;">
       <ul class="sidebar-menu">
-        <li class="header text-red">Activate / Deactivate AVP</li>
+        <li class="header text-red"><b>PEA SETTINGS</b></li>
         <li>
           <?php
-            if($avp->status_id == 1)
-            {
-              echo CHtml::link('<i class="fa fa-lock"></i><span> Deactivate AVP</span>', array('avpactivate/deactivate'),array('confirm' => 'Are you sure you want to Deactivate AVP for the approval of reports?'));
-            }else{
-              echo CHtml::link('<i class="fa fa-unlock"></i><span> Activate AVP</span>', array('avpactivate/activate'),array('confirm' => 'Are you sure you want to Activate AVP for the approval of reports?'));
-            }
+            // if($avp->status_id == 1) {
+            //   echo CHtml::link('<i class="fa fa-lock"></i><span> Deactivate AVP</span>', array('avpactivate/deactivate'),array('confirm' => 'Are you sure you want to Deactivate AVP for the approval of reports?'));
+            // } else {
+            //   echo CHtml::link('<i class="fa fa-unlock"></i><span> Activate AVP</span>', array('avpactivate/activate'),array('confirm' => 'Are you sure you want to Activate AVP for the approval of reports?'));
+            // }
+
+            echo CHtml::link('<span class="fa fa-cogs"></span> Settings', array('settings/index'));
           ?>
         </li>
       </ul>
