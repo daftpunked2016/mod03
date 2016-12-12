@@ -200,6 +200,7 @@ class DefaultController extends Controller
 					$transaction = new PeaTransactions;
 					$transaction->generateLog($id, $report->account_id, 1, PeaTransactions::TYPE_APPROVE_REPORT);
 
+					UserHandledProjects::addProject($report->chairman_id, $report->id);
 					Yii::app()->user->setFlash('success','You have successfully approved this report!');
 					$this->redirect(array('index'));	
 
@@ -213,6 +214,7 @@ class DefaultController extends Controller
 				$remark->delete();
 				$report->status_id = 1;
 
+
 				if($report->save())
 				{
 					if($remark->save())
@@ -220,6 +222,7 @@ class DefaultController extends Controller
 						$transaction = new PeaTransactions;
 						$transaction->generateLog($id, $report->account_id, 1, PeaTransactions::TYPE_APPROVE_REPORT);
 
+						UserHandledProjects::addProject($report->chairman_id, $report->id);
 						Yii::app()->user->setFlash('success','You have successfully approved this report!');
 						$this->redirect(array('approved'));
 					}else{
@@ -261,6 +264,7 @@ class DefaultController extends Controller
 					$transaction = new PeaTransactions;
 					$transaction->generateLog($id, $report->account_id, 1, PeaTransactions::TYPE_REJECT_REPORT);
 
+					UserHandledProjects::deleteProject($report->chairman_id, $report->id);
 					Yii::app()->user->setFlash('success','You have successfully reject this report!');
 					$this->redirect(array('reject'));	
 				}else{

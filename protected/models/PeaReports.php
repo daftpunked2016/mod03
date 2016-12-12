@@ -46,14 +46,14 @@ class PeaReports extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('project_title, account_id, president_id, chairman_id, chapter_id, rep_id, brief_description, objectives, action_taken, results_achieved, program_partners, recommendation, data_completed, members_involved, sectors_involved, projected_income, projected_expenditures, actual_income, actual_expenditures, status_id', 'required'),
+			array('project_title, account_id, president_id, chairman_id, chapter_id, rep_id, brief_description, objectives, action_taken, results_achieved, program_partners, recommendation, data_completed, members_involved, sectors_involved, projected_income, projected_expenditures, actual_income, actual_expenditures, status_id, date_deadline', 'required'),
 			array('account_id, president_id, chairman_id, chapter_id, members_involved, sectors_involved, status_id', 'numerical', 'integerOnly'=>true),
 			array('projected_income, projected_expenditures, actual_income, actual_expenditures', 'numerical'),
 			array('project_title', 'length', 'max'=>255),
 			array('rep_id', 'length', 'max'=>3),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, project_title, account_id, president_id, chairman_id, chapter_id, rep_id, brief_description, objectives, action_taken, results_achieved, program_partners, recommendation, data_completed, members_involved, sectors_involved, projected_income, projected_expenditures, actual_income, actual_expenditures, fileupload_id, attendance_sheet date_upload, status_id', 'safe', 'on'=>'search'),
+			array('id, project_title, account_id, president_id, chairman_id, chapter_id, rep_id, brief_description, objectives, action_taken, results_achieved, program_partners, recommendation, data_completed, members_involved, sectors_involved, projected_income, projected_expenditures, actual_income, actual_expenditures, fileupload_id, attendance_sheet date_upload, date_deadline, status_id', 'safe', 'on'=>'search'),
 		);
 	}
 

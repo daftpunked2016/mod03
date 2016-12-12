@@ -75,6 +75,7 @@ class AccountController extends Controller
 					    ),))->find('chapter_id = '.$user->chapter_id.' AND position_id = 11');
 		$members = User::model()->userAccount()->findAll('chapter_id = '.$user->chapter_id);
 
+
 		if(isset($_POST['refcode']))
 		{
 			$criteria = "N";
@@ -90,12 +91,7 @@ class AccountController extends Controller
 			if(isset($_POST['quantity']))
 				$qty = $_POST['quantity'];
 			
-			if ($_POST['date_completed'] == '') {
-				$date_completed = null;
-			}else{
-				$date_completed = $_POST['date_completed'];
-			}
-
+		
 			$report = new PeaReports;
 
 			$report->project_title = $_POST['project_title'];
@@ -111,15 +107,16 @@ class AccountController extends Controller
 			$report->results_achieved = $_POST['results_achieved'];
 			$report->program_partners = $_POST['program_partners'];
 			$report->recommendation = $_POST['recommendations'];
-			$report->data_completed= $date_completed;
+			$report->data_completed = $_POST['date_completed'];
 			$report->members_involved = $_POST['jci_members'];
 			$report->sectors_involved = $_POST['non_jci'];
 			$report->projected_income = $_POST['proj_income'];
 			$report->projected_expenditures = $_POST['proj_exp'];
 			$report->actual_income = $_POST['actual_income'];
 			$report->actual_expenditures = $_POST['actual_exp'];
-			$report->fileupload_id = $_FILES['file-report']['name'];
-			$report->attendance_sheet = $_FILES['attendance-sheet']['name'];
+			$report->fileupload_id = (isset($_FILES['file-report'])) ? $_FILES['file-report']['name'] : null;
+			$report->attendance_sheet =  (isset($_FILES['attendance-sheet'])) ? $_FILES['attendance-sheet']['name'] : null;
+			$report->date_deadline = date('Y-m-10', strtotime("+1 month", strtotime($_POST['date_completed'])));
 
 			if(isset($_POST['to_draft'])) {
 				$report->status_id = 6; //TO DRAFT ONLY
@@ -171,6 +168,16 @@ class AccountController extends Controller
 
 			if($valid)
 			{
+				if(!isset($_POST['to_draft'])) {
+					if(strtotime("now") >= strtotime($report->date_deadline)) {
+						Yii::app()->user->setFlash('error', 'ERROR: Project Report\'s Deadline of Submission has already passed.');
+						$response['status'] = false;
+						$response['message'] = 'Report cannot be submitted. Deadline of submission has already passed.';
+						echo json_encode($response);
+						exit;
+					}
+				}
+
 				try
 				{
 					if(isset($_FILES['file-report']))
@@ -258,7 +265,6 @@ class AccountController extends Controller
 				exit;
 			} 
 		}
-
 		$this->render('upload_report',array(
 			'account'=>$account,
 			'chapter'=>$chapter,
@@ -365,6 +371,7 @@ class AccountController extends Controller
 			$report->projected_expenditures = $_POST['proj_exp'];
 			$report->actual_income = $_POST['actual_income'];
 			$report->actual_expenditures = $_POST['actual_exp'];
+			$report->date_deadline = date('Y-m-10', strtotime("+1 month", strtotime($date_completed)));
 			// $report->date_upload = date('Y-m-d H:i:s');
 
 			if(isset($_POST['edit-delete-att'])) {
@@ -412,6 +419,14 @@ class AccountController extends Controller
 
 			if($valid)
 			{
+				if(strtotime("now") >= strtotime($report->date_deadline)) {
+					Yii::app()->user->setFlash('error', 'ERROR: Project Report\'s Deadline of Submission has already passed.');
+					$response['status'] = false;
+					$response['message'] = 'Report cannot be submitted. Deadline of submission has already passed.';
+					echo json_encode($response);
+					exit;
+				}
+
 				try
 				{
 					if(isset($_FILES['file-report'])) //new proj. photo saving

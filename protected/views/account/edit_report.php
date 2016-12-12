@@ -179,6 +179,12 @@ function uploadDraft(){
         return false;  
 	}
 
+	if($('#date_completed').val() == "") {
+		alert("Date Project Completed is required.")
+		$('#date_completed').focus();
+        return false;  
+	}
+
 	$('.to-draft').each(function( index ) {
 		if ($(this).val() !== "") {
 			filled_fields++;
@@ -561,6 +567,7 @@ function disableButtons() {
 													),
 												'htmlOptions' => array(
 													'name'=>'date_completed',
+													'id'=>'date_completed',
 													'size' => 20,         // textField size
 													'class' => 'report form-control to-draft',
 												),	
@@ -719,6 +726,11 @@ function disableButtons() {
 							</div>
 						</div>
 					</div>
+					<p style="margin-left:20px">
+						<strong> Important: </strong>Please upload your Project Photo Collage with the following: <br/>
+							<em>1. Actual Project Banner in the event itself (with members and/or participants)</em><br/>
+							<em>2. Action Photos (minimum of 4 photos)</em>
+					</p>
 
 					<br />
 					<hr />
