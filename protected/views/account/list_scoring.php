@@ -93,6 +93,23 @@ $(function () {
 	$("#raw_overall").html(raw_overall);
 });
 </script>
+
+<div class="content-header">
+	<?php 
+		foreach(Yii::app()->user->getFlashes() as $key=>$message) {
+			if($key  === 'success') {
+				echo "<div class='alert alert-success alert-dismissible' role='alert'>
+				<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>".
+				$message.'</div>';
+			} else {
+				echo "<div class='alert alert-danger alert-dismissible' role='alert'>
+				<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>".
+				$message.'</div>';
+			}
+		}
+	?>
+</div>
+
 <!-- Main content -->
 <div class="row">
 	<section class="content">

@@ -60,6 +60,13 @@ class AccountController extends Controller
 	 */
 	public function actionSubmitReport()
 	{
+		$settings = PeaSettings::model()->find();
+
+		if ($settings->pres_approval == 2) {
+			Yii::app()->user->setFlash("error", 'Reports Submission disabled by NSG.');
+			$this->redirect(array("account/listscoring"));
+		}
+
 		$response = array();
 		$account_id =  Yii::app()->user->id;
 		

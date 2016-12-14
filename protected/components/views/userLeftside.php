@@ -24,11 +24,20 @@
       <?php endif; ?>
 
       <?php if($user->position_id == 11 || $user->position_id == 13): ?>
-      <li>
-        <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/submitreport">
-          <i class="fa fa-upload"></i> <span>Submit Report</span>
-        </a>
-      </li>
+
+        <?php if ($settings->pres_approval == 1): ?>
+          <li>
+            <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/account/submitreport">
+              <i class="fa fa-upload"></i> <span>Submit Report</span>
+            </a>
+          </li>
+        <?php else: ?>
+          <li>
+            <a href="javascript:void(0);">
+              <i class="fa fa-ban"></i> <span>Submit Report (Disabled)</span>
+            </a>
+          </li>
+        <?php endif ?>
       <?php endif; ?>
 
         <li class="treeview">
