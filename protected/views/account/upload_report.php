@@ -318,6 +318,12 @@ function disableButtons() {
 											?>	
 										</select>
 										<span class="label label-danger"></span>
+										<p>
+											<b>
+												Note: <br>
+												Save to Draft / Assign to Project Chair this report in order for the project chair to have an access.
+											</b>
+										</p>
 									</div>
 								</div>
 							</div>
@@ -708,10 +714,10 @@ function disableButtons() {
 					<div class="row">
 						<div class="pull-right">
 							<button type="submit" class="btn btn-lg btn-warning" name="submit" style="margin-right:20px" <?php if($president == null) echo "disabled id='btn-disabled'"; else echo "id='btn-draft'"; ?> > 
-								 <span class="fa fa-folder-o" style="margin-right:10px"></span>Save to Drafts
+								 <span class="fa fa-folder-o" style="margin-right:10px"></span>Save Drafts / Assign to Project Chair
 							</button>
 							<button type="submit" class="btn btn-lg btn-primary" name="submit" style="margin-right:20px" <?php if($president == null) echo "disabled id='btn-disabled'"; else echo "id='btn-upload'"; ?> > 
-								 <span class="fa fa-upload" style="margin-right:10px"></span>S U B M I T
+								 <span class="fa fa-upload" style="margin-right:10px"></span>Submit / Approve Report
 							</button>
 						</div>
 					</div>

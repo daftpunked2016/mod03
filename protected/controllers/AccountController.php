@@ -80,7 +80,7 @@ class AccountController extends Controller
 					    	'select'=> false,
 					        'condition' => 'account.status_id = 1'
 					    ),))->find('chapter_id = '.$user->chapter_id.' AND position_id = 11');
-		$members = User::model()->userAccount()->findAll('chapter_id = '.$user->chapter_id);
+		$members = User::model()->userAccount()->isActive()->findAll('chapter_id = '.$user->chapter_id);
 
 
 		if(isset($_POST['refcode']))

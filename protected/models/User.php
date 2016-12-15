@@ -60,6 +60,11 @@ class User extends CActiveRecord
 				'join' => 'INNER JOIN jci_account AS a ON t.account_id = a.id',
 				'condition' => 'a.account_type_id = 2',
 			),
+
+			'isActive' => array(
+				'join' => 'INNER JOIN jci_account AS a ON t.account_id = a.id',
+				'condition' => 'a.status_id = 1',
+			),
 		);
 	}
 

@@ -2,3 +2,4 @@ attendance_sheets/
 jcipea_reports/
 assets/
 protected/runtime
+protected/runtime/application.log
