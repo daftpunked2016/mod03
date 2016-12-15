@@ -594,9 +594,14 @@ function disableButtons() {
 								</div>
 
 								<p style="margin-left:20px; font-size:11px;">
-									<strong> Important: </strong>Please upload your Project Photo Collage with the following: <br/>
-										<em>1. Actual Project Banner in the event itself (with members and/or participants)</em><br/>
+									<strong> Important: </strong>
+									<b>
+										Please upload your Project Photo Collage with the following:
+										<br/>
+										<em>1. Actual Project Banner in the event itself (with members and/or participants)</em>
+										<br/>
 										<em>2. Action Photos (minimum of 4 photos)</em>
+									</b>
 								</p>
 							</div>
 							<div class="col-md-6">
