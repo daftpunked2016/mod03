@@ -97,7 +97,12 @@ class AccountController extends Controller
 
 			if(isset($_POST['quantity']))
 				$qty = $_POST['quantity'];
-			
+
+			if ($_POST['date_completed'] == '') {
+				$date_completed = null;
+			} else {
+				$date_completed = $_POST['date_completed'];
+			}
 		
 			$report = new PeaReports;
 
@@ -123,7 +128,12 @@ class AccountController extends Controller
 			$report->actual_expenditures = $_POST['actual_exp'];
 			$report->fileupload_id = (isset($_FILES['file-report'])) ? $_FILES['file-report']['name'] : null;
 			$report->attendance_sheet =  (isset($_FILES['attendance-sheet'])) ? $_FILES['attendance-sheet']['name'] : null;
-			$report->date_deadline = date('Y-m-10', strtotime("+1 month", strtotime($_POST['date_completed'])));
+			
+			if($date_completed != null) {
+				$report->date_deadline = date('Y-m-10', strtotime("+1 month", strtotime($_POST['date_completed'])));
+			} else {
+				$report->date_deadline = null;
+			}
 
 			if(isset($_POST['to_draft'])) {
 				$report->status_id = 6; //TO DRAFT ONLY
@@ -175,13 +185,15 @@ class AccountController extends Controller
 
 			if($valid)
 			{
-				if(!isset($_POST['to_draft'])) {
-					if(strtotime("now") >= strtotime($report->date_deadline)) {
-						Yii::app()->user->setFlash('error', 'ERROR: Project Report\'s Deadline of Submission has already passed.');
-						$response['status'] = false;
-						$response['message'] = 'Report cannot be submitted. Deadline of submission has already passed.';
-						echo json_encode($response);
-						exit;
+				if($date_completed != null) {
+					if(!isset($_POST['to_draft'])) {
+						if(strtotime("now") >= strtotime($report->date_deadline)) {
+							Yii::app()->user->setFlash('error', 'ERROR: Project Report\'s Deadline of Submission has already passed.');
+							$response['status'] = false;
+							$response['message'] = 'Report cannot be submitted. Deadline of submission has already passed.';
+							echo json_encode($response);
+							exit;
+						}
 					}
 				}
 
@@ -378,7 +390,12 @@ class AccountController extends Controller
 			$report->projected_expenditures = $_POST['proj_exp'];
 			$report->actual_income = $_POST['actual_income'];
 			$report->actual_expenditures = $_POST['actual_exp'];
-			$report->date_deadline = date('Y-m-10', strtotime("+1 month", strtotime($date_completed)));
+
+			if($date_completed != null) {
+				$report->date_deadline = date('Y-m-10', strtotime("+1 month", strtotime($date_completed)));
+			} else {
+				$report->date_deadline = null;
+			}
 			// $report->date_upload = date('Y-m-d H:i:s');
 
 			if(isset($_POST['edit-delete-att'])) {
@@ -426,12 +443,14 @@ class AccountController extends Controller
 
 			if($valid)
 			{
-				if(strtotime("now") >= strtotime($report->date_deadline)) {
-					Yii::app()->user->setFlash('error', 'ERROR: Project Report\'s Deadline of Submission has already passed.');
-					$response['status'] = false;
-					$response['message'] = 'Report cannot be submitted. Deadline of submission has already passed.';
-					echo json_encode($response);
-					exit;
+				if($date_completed != null) {
+					if(strtotime("now") >= strtotime($report->date_deadline)) {
+						Yii::app()->user->setFlash('error', 'ERROR: Project Report\'s Deadline of Submission has already passed.');
+						$response['status'] = false;
+						$response['message'] = 'Report cannot be submitted. Deadline of submission has already passed.';
+						echo json_encode($response);
+						exit;
+					}
 				}
 
 				try

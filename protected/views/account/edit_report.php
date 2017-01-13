@@ -179,11 +179,11 @@ function uploadDraft(){
         return false;  
 	}
 
-	if($('#date_completed').val() == "") {
-		alert("Date Project Completed is required.")
-		$('#date_completed').focus();
-        return false;  
-	}
+	// if($('#date_completed').val() == "") {
+	// 	alert("Date Project Completed is required.")
+	// 	$('#date_completed').focus();
+ //        return false;  
+	// }
 
 	$('.to-draft').each(function( index ) {
 		if ($(this).val() !== "") {
