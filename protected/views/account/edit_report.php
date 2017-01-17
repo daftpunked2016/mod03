@@ -172,7 +172,17 @@ function getScoringAnswers(report_id) {
 }
 
 function uploadDraft(){
-	filled_fields = 0;
+	//filled_fields = 0;
+	
+	if($('#chairman_id').val() == "") {
+		alert("Please select a Project Chairman first.")
+        return false;  
+	}
+
+	if($('#project_title').val() == "") {
+		alert("Please provide a Project Title first.")
+        return false;  
+	}
 	
 	if($('#pea-refcode').val() == "") {
 		alert("Please select a Reference Code first.")
@@ -185,32 +195,32 @@ function uploadDraft(){
  //        return false;  
 	// }
 
-	$('.to-draft').each(function( index ) {
-		if ($(this).val() !== "") {
-			filled_fields++;
-	    }
-	});
+	// $('.to-draft').each(function( index ) {
+	// 	if ($(this).val() !== "") {
+	// 		filled_fields++;
+	//     }
+	// });
     
-    if (filled_fields < 5){
-    	alert("Please fill out at least 5 fields before saving to draft.");
-        return false;   
-    }
+ //    if (filled_fields < 5){
+ //    	alert("Please fill out at least 5 fields before saving to draft.");
+ //        return false;   
+ //    }
 
-    else if(filled_fields >= 5)
-    {	
+    // else if(filled_fields >= 5)
+    // {	
     	disableButtons();
 
 	  	var fd = new FormData();
 	  	var other_data = $('form').serializeArray();
 	  	fd.append('file-report', $('input[type=file]')[0].files[0]);
-	  	fd.append('attendance-sheet', $('input[type=file]')[1].files[0]); 
+	  	fd.append('attendance-sheet', $('input#attendance-sheet')[0].files[0]); 
 	  	fd.append('to_draft', true); 
 	  	$.each(other_data,function(key,input){
 	      fd.append(input.name,input.value);
 	  	});
 
 	  	ajaxUpload(fd);
-	}
+	// }
 }
 
 function updateFile() {
@@ -235,7 +245,7 @@ function updateFile() {
 	  	var fd = new FormData();
 	  	var other_data = $('form').serializeArray();
 	  	fd.append('file-report', $('input[type=file]')[0].files[0]);
-	  	fd.append('attendance-sheet', $('input[type=file]')[1].files[0]); 
+	  	fd.append('attendance-sheet', $('input#attendance-sheet')[0].files[0]); 
 	  	$.each(other_data,function(key,input){
 	      fd.append(input.name,input.value);
 	  	});
