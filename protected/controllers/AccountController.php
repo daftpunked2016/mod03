@@ -958,7 +958,7 @@ class AccountController extends Controller
 						// FOR PROJECT CHAIRMAN
 						$search2['order'] = 'date_upload ASC';
 						$search2['condition'] = 'chairman_id = '.$user->account_id.' AND status_id = 7';
-						$reports = Peareports::model()->findAll($search2);
+						$reports = PeaReports::model()->findAll($search2);
 						$subheader = "Reports for Assigned to you";
 					break;
 				}
