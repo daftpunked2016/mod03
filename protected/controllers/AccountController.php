@@ -735,7 +735,7 @@ class AccountController extends Controller
 
 		// redirect writer
 		if(!array_search($user->position_id, $pos_arr)) {
-			$this->redirect(array('account/viewreports', 'st'=>'p'));
+			$this->redirect(array('account/viewreports', 'st'=>'d'));
 		}
 
 		$pea_categories = PeaCategory::model()->findAll();

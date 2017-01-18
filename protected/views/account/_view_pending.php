@@ -1,6 +1,12 @@
 <tr>
   <td><?php echo CHtml::encode($data->rep_id); ?></td>
-	<td><a href="#myModal-<?php echo CHtml::encode($data->id); ?>" data-toggle="modal" data-target="#myModal-<?php echo CHtml::encode($data->id); ?>"><strong><?php echo CHtml::encode($data->project_title); ?></strong></a></td>
+	<td>
+    <a href="#myModal-<?php echo CHtml::encode($data->id); ?>" data-toggle="modal" data-target="#myModal-<?php echo CHtml::encode($data->id); ?>">
+      <strong>
+        <?php echo CHtml::encode($data->project_title); ?>
+      </strong>
+    </a>
+  </td>
 	<td><?php echo Chapter::model()->getChapter($data->chapter_id); ?></td>
 	<td><?php echo User::model()->getCompleteName2($data->account_id); ?></td>
 	<td><?php echo CHtml::encode(date('F d, Y h:i:s A', strtotime($data->date_upload))); ?></td>
@@ -8,8 +14,7 @@
 		<?php
 			echo CHtml::link('<span class="fa fa-file-image-o" style="margin-right:3px;"></span>', array('/account/viewprojphoto', 'id' => $data->id), array('title' => 'View Project Photo', 'target'=>'_blank', 'style'=>'margin-right:3px;'));
 
-      if($data->attendance_sheet != 0)
-      {
+      if($data->attendance_sheet != 0) {
         echo CHtml::link('<span class="fa fa-list" style="margin-right:3px;"></span>', array('/account/viewattsheet', 'id' => $data->id), array('title' => 'View Attendance Sheet', 'target'=>'_blank', 'style'=>'margin-right:3px;'));
       }
 
@@ -17,27 +22,26 @@
         <span class="fa fa-info" style="margin-right:3px;"></span>
       </a>';
 
-      if($user_position == 13 || $user_position == 11 || $data->chairman_id == Yii::app()->user->id)
-      {
+      // if($user_position == 13 || $user_position == 11 || $data->chairman_id == Yii::app()->user->id)
+      // REMOVE EDIT BUTTON ON PROJECT CHAIR ONCE SUBMITED TO LOCAL SEC
+      if($user_position == 13 || $user_position == 11) {
         echo CHtml::link('<span class="fa fa-pencil" style="margin-right:3px;"></span>', array('/account/editreport', 'id' => $data->id), array('title' => 'Edit Report', 'target'=>'_blank', 'style'=>'margin-right:3px;'));
 			}
 
-      if($display_actions_status)
-      {
+      if($display_actions_status) {
         //if($user_position == 9){ // activate for RVP only
         //if($user_position == 8) { //AVP ONLY
         //if($user_position == 9 OR $user_position == 8) { //AVP & RVP ONLY
         //if($user_position != 13){ // for AVP, RVP, Pres
         //if($user_position == 11){ // Pres only
-          echo CHtml::link('<span class="fa fa-check" style="margin-right:3px;"></span>',array('/account/approvereport', 'id' => $data->id, 'st'=>'p'), array('title' => 'Approve Report', 'confirm' => "Are you sure you want to Approve this report?", 'style'=>'margin-right:3px;'));
-          echo '<a href="#rejectModal-'.CHtml::encode($data->id).'" data-toggle="modal" data-target="#rejectModal-'.CHtml::encode($data->id).'" style="margin-right:3px;" title="Reject Report">
-              <span class="fa fa-remove" style="margin-right:3px;"></span>
-            </a>';
+        echo CHtml::link('<span class="fa fa-check" style="margin-right:3px;"></span>',array('/account/approvereport', 'id' => $data->id, 'st'=>'p'), array('title' => 'Approve Report', 'confirm' => "Are you sure you want to Approve this report?", 'style'=>'margin-right:3px;'));
+        echo '<a href="#rejectModal-'.CHtml::encode($data->id).'" data-toggle="modal" data-target="#rejectModal-'.CHtml::encode($data->id).'" style="margin-right:3px;" title="Reject Report">
+            <span class="fa fa-remove" style="margin-right:3px;"></span>
+          </a>';
         // }
 		  }
 
-      if($user_position == 13 || $user_position == 11)
-      {
+      if($user_position == 13 || $user_position == 11) {
         echo CHtml::link('<span class="fa fa-trash-o" style="margin-right:3px;"></span>', array('/account/deletereport', 'id' => $data->id, 'view' => 'p'), array('confirm' => "Are you sure you want to DELETE this report?", 'title' => 'Delete Report', 'style'=>'margin-right:3px;'));
       } 
 
