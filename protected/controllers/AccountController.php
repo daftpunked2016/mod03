@@ -133,7 +133,7 @@ class AccountController extends Controller
 				$report->data_completed = $_POST['date_completed'];
 
 				if(date('Y', strtotime($date_completed)) == '2016') {
-					$report->date_deadline = '2017-02-18';
+					$report->date_deadline = '2017-02-19';
 				} else {
 					$report->date_deadline = date('Y-m-2', strtotime("+2 month", strtotime($date_completed)));
 				}
