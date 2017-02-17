@@ -330,7 +330,7 @@ class AccountController extends Controller
 					    	'select'=> false,
 					        'condition' => 'account.status_id = 1'
 					    ),))->find('chapter_id = '.$report->chapter_id.' AND position_id = 11');
-		$members = User::model()->userAccount()->findAll('chapter_id = '.$report->chapter_id);
+		$members = User::model()->isActive()->userAccount()->findAll('chapter_id = '.$report->chapter_id);
 		$scoring = PeaScores::model()->find('report_id = '.$id);
 
 
