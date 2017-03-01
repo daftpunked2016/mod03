@@ -403,7 +403,7 @@ class AccountController extends Controller
 				if(date('Y', strtotime($date_completed)) == '2016') {
 					$report->date_deadline = '2017-02-19';
 				} else {
-					$report->date_deadline = date('Y-m-1', strtotime("+2 month", strtotime($date_completed)));
+					$report->date_deadline = date('Y-m-2', strtotime("+2 month", strtotime($date_completed)));
 				}
 			} else {
 				$report->data_completed= null;
