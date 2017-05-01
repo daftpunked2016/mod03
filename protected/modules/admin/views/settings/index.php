@@ -40,7 +40,7 @@
 			?>
 			<div class="form">
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<span class="fa fa-cogs"></span>
 							<?php echo $form->labelEx($settings,'pres_approval'); ?>
@@ -54,7 +54,7 @@
 							<?php echo $form->error($settings,'pres_approval'); ?>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<span class="fa fa-cogs"></span>
 							<?php echo $form->labelEx($settings,'rvp_approval'); ?>
@@ -68,7 +68,7 @@
 							<?php echo $form->error($settings,'rvp_approval'); ?>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<div class="form-group">
 							<span class="fa fa-cogs"></span>
 							<?php echo $form->labelEx($settings,'avp_approval'); ?>
@@ -80,6 +80,21 @@
 						    		// 'separator'=>'&nbsp;&nbsp;&nbsp;',
 						    )); ?>
 							<?php echo $form->error($settings,'avp_approval'); ?>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group">
+							<span class="fa fa-cogs"></span>
+							<?php echo $form->labelEx($settings,'bypass_status'); ?>
+							<br>
+							<?php echo $form->radioButtonList($settings,'bypass_status', 
+								array(1=>'Enabled', 2=>'Disabled'),
+								array(
+							   		// 'labelOptions'=>array('style'=>'display:block;'), // add this code
+						    		// 'separator'=>'&nbsp;&nbsp;&nbsp;',
+						    )); ?>
+							<?php echo $form->error($settings,'bypass_status'); ?>
 						</div>
 					</div>
 				</div>

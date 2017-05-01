@@ -8,6 +8,7 @@
  * @property integer $pres_approval
  * @property integer $rvp_approval
  * @property integer $avp_approval
+ * @property integer $bypass_status
  */
 class PeaSettings extends CActiveRecord
 {
@@ -27,11 +28,11 @@ class PeaSettings extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('pres_approval, rvp_approval, avp_approval', 'required'),
-			array('pres_approval, rvp_approval, avp_approval', 'numerical', 'integerOnly'=>true),
+			array('pres_approval, rvp_approval, avp_approval, bypass_status', 'required'),
+			array('pres_approval, rvp_approval, avp_approval, bypass_status', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, pres_approval, rvp_approval, avp_approval', 'safe', 'on'=>'search'),
+			array('id, pres_approval, rvp_approval, avp_approval, bypass_status', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,6 +57,7 @@ class PeaSettings extends CActiveRecord
 			'pres_approval' => 'LO President Approval',
 			'rvp_approval' => 'RVP Approval',
 			'avp_approval' => 'AVP Approval',
+			'bypass_status' => 'ByPass Status',
 		);
 	}
 
@@ -81,6 +83,7 @@ class PeaSettings extends CActiveRecord
 		$criteria->compare('pres_approval',$this->pres_approval);
 		$criteria->compare('rvp_approval',$this->rvp_approval);
 		$criteria->compare('avp_approval',$this->avp_approval);
+		$criteria->compare('bypass_status',$this->bypass_status);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

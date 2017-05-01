@@ -19,11 +19,14 @@
 			$category = PeaCategory::model()->findAll();
 			$avp = PeaAvpActivate::model()->find();
 
+			$settings = PeaSettings::model()->find();
+
 			$this->render("leftside",array(
 				'user' => $user, 
 				'user_avatar'=>$user_avatar, 
 				'category'=>$category,
 				'avp'=> $avp,
+				'settings'=> $settings,
 			));
 		}
 	}

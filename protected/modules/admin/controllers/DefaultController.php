@@ -125,7 +125,38 @@ class DefaultController extends Controller
 		));
 	}
 
+	public function actionByPass()
+	{
+		$settings = PeaSettings::model()->find();
 
+		if ($settings->bypass_status == 2) {
+			Yii::app()->user->setFlash('error', 'ByPass Settings is Disabled. Please enable before going to this page.');
+			$this->redirect(array('default/index'));
+		}
+
+		$search = "";
+
+		if(!empty($_GET['chapter_id']) && empty($_GET['rep_id']) ){
+			$search = array('condition'=>'chapter_id ='.$_GET['chapter_id']);
+		}elseif(!empty($_GET['rep_id']) && empty($_GET['chapter_id'])){
+			$search = array('condition'=>'rep_id = "'.$_GET['rep_id'].'"');
+		}elseif(!empty($_GET['chapter_id']) && !empty($_GET['rep_id'])){
+			$search = array('condition'=>'rep_id = "'.$_GET['rep_id'].'" AND chapter_id ='.$_GET['chapter_id']);
+		}
+
+		$search['order'] = 'date_upload ASC'; 
+		$reports = PeaReports::model()->isApprovedPres()->findAll($search);
+
+		$reportDP=new CArrayDataProvider($reports, array(
+			'pagination' => array(
+				'pageSize' => 10
+			)
+		));
+
+		$this->render('bypass', array(
+			'reportDP' => $reportDP,
+		));
+	}
 
 	public function actionLogin()
 	{	

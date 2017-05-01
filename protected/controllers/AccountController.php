@@ -398,15 +398,17 @@ class AccountController extends Controller
 			$report->actual_expenditures = $_POST['actual_exp'];
 
 			if($date_completed != null) {
-				$report->data_completed= $date_completed;
+				$report->data_completed = $date_completed;
 
 				if(date('Y', strtotime($date_completed)) == '2016') {
 					$report->date_deadline = '2017-02-19';
 				} else {
-					$report->date_deadline = date('Y-m-2', strtotime("+2 month", strtotime($date_completed)));
+					if ($report->status_id != 5) {
+						$report->date_deadline = date('Y-m-2', strtotime("+2 month", strtotime($date_completed)));
+					}
 				}
 			} else {
-				$report->data_completed= null;
+				$report->data_completed = null;
 				$report->date_deadline = null;
 			}
 			// $report->date_upload = date('Y-m-d H:i:s');

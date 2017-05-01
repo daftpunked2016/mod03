@@ -39,6 +39,9 @@
           <li><?php echo CHtml::link('<i class="fa fa-question"></i><span>Pending</span><small class="label pull-right bg-blue">'.count(PeaReports::model()->isApprovedRVP()->findAll()).'</small>',array('default/index')) ?></li>
           <li><?php echo CHtml::link('<i class="fa fa-check"></i><span>Approved</span><small class="label pull-right bg-green">'.count(PeaReports::model()->isApproved()->findAll()).'</small>',array('default/approved')) ?></li>
           <li><?php echo CHtml::link('<i class="fa fa-times"></i><span>Rejected</span><small class="label pull-right bg-red">'.count(PeaReports::model()->isRejected()->findAll()).'</small>',array('default/reject')) ?></li>
+          <?php if ($settings->bypass_status == 1): ?>
+            <li><?php echo CHtml::link('<i class="fa fa-sign-in"></i><span>For Approval-By Pass</span><small class="label pull-right bg-yellow">'.count(PeaReports::model()->isApprovedPres()->findAll()).'</small>',array('default/bypass')) ?></li>
+          <?php endif; ?>
         </ul>
       </li>
 
