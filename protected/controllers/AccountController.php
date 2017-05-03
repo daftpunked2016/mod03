@@ -134,6 +134,8 @@ class AccountController extends Controller
 
 				if(date('Y', strtotime($date_completed)) == '2016') {
 					$report->date_deadline = '2017-02-19';
+				} elseif(date('Y-m', strtotime($date_completed)) == '2017-03') {
+					$report->date_deadline = '2017-05-16';
 				} else {
 					$report->date_deadline = date('Y-m-2', strtotime("+2 month", strtotime($date_completed)));
 				}
@@ -307,6 +309,7 @@ class AccountController extends Controller
 		$currentDate = date('Ymdhis');
 
 		$report = PeaReports::model()->findByPk($id);
+		$old_status = $report->status_id;
 		$orig_rep_id = $report->rep_id;
 		$account = Account::model()->findByPk($account_id);
 
@@ -398,17 +401,17 @@ class AccountController extends Controller
 			$report->actual_expenditures = $_POST['actual_exp'];
 
 			if($date_completed != null) {
-				$report->data_completed = $date_completed;
+				$report->data_completed= $date_completed;
 
 				if(date('Y', strtotime($date_completed)) == '2016') {
 					$report->date_deadline = '2017-02-19';
+				} elseif(date('Y-m', strtotime($date_completed)) == '2017-03') {
+					$report->date_deadline = '2017-05-16';
 				} else {
-					if ($report->status_id != 5) {
-						$report->date_deadline = date('Y-m-2', strtotime("+2 month", strtotime($date_completed)));
-					}
+					$report->date_deadline = date('Y-m-2', strtotime("+2 month", strtotime($date_completed)));
 				}
 			} else {
-				$report->data_completed = null;
+				$report->data_completed= null;
 				$report->date_deadline = null;
 			}
 			// $report->date_upload = date('Y-m-d H:i:s');
@@ -459,12 +462,14 @@ class AccountController extends Controller
 			if($valid)
 			{
 				if($date_completed != null) {
-					if(strtotime("now") >= strtotime($report->date_deadline)) {
-						Yii::app()->user->setFlash('error', 'ERROR: Project Report\'s Deadline of Submission has already passed.');
-						$response['status'] = false;
-						$response['message'] = 'Report cannot be submitted. Deadline of submission has already passed.';
-						echo json_encode($response);
-						exit;
+					if ($old_status != 5) {
+						if(strtotime("now") >= strtotime($report->date_deadline)) {
+							Yii::app()->user->setFlash('error', 'ERROR: Project Report\'s Deadline of Submission has already passed.');
+							$response['status'] = false;
+							$response['message'] = 'Report cannot be submitted. Deadline of submission has already passed.';
+							echo json_encode($response);
+							exit;
+						}
 					}
 				}
 
