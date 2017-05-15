@@ -242,24 +242,25 @@ class DefaultController extends Controller
 			}else{
 
 				$remark = PeaReportsRemarks::model()->find(array('condition' => 'report_id ='.$report->id));
-				$remark->delete();
-				$report->status_id = 1;
+				
+				if (!empty($remark)) {
+					$remark->delete();
+					$remark->save();
+				}
 
+				$report->status_id = 1;
 
 				if($report->save())
 				{
-					if($remark->save())
-					{
-						$transaction = new PeaTransactions;
-						$transaction->generateLog($id, $report->account_id, 1, PeaTransactions::TYPE_APPROVE_REPORT);
+					$transaction = new PeaTransactions;
+					$transaction->generateLog($id, $report->account_id, 1, PeaTransactions::TYPE_APPROVE_REPORT);
 
-						UserHandledProjects::addProject($report->chairman_id, $report->id);
-						Yii::app()->user->setFlash('success','You have successfully approved this report!');
-						$this->redirect(array('approved'));
-					}else{
-						Yii::app()->user->setFlash('error','An error occured while trying to approve this report. Please try again later.');
-						$this->redirect(array('approved'));
-					}
+					UserHandledProjects::addProject($report->chairman_id, $report->id);
+					Yii::app()->user->setFlash('success','You have successfully approved this report!');
+					$this->redirect(array('approved'));
+				} else {
+					Yii::app()->user->setFlash('error','An error occured while trying to approve this report. Please try again later.');
+					$this->redirect(array('approved'));
 				}
 			}
 			
@@ -310,7 +311,7 @@ class DefaultController extends Controller
 
 	public function actionPrintReport($id)
 	{
-		$this->layout='//layouts/pdf';
+		$this->layout='/layouts/pdf';
 
 		$report = PeaReports::model()->findByPk($id);
 
@@ -396,7 +397,7 @@ class DefaultController extends Controller
 
 		if($topdf!=null)
 		{
-			$this->layout='//layouts/pdf';
+			$this->layout='/layouts/pdf';
 		}
 
 		$user = User::model()->find('account_id = '.$account_id);
@@ -435,7 +436,7 @@ class DefaultController extends Controller
 
 		if($topdf!=null)
 		{
-			$this->layout='//layouts/pdf';
+			$this->layout='/layouts/pdf';
 		}
 
 		if(isset($_GET['submit']))
@@ -519,7 +520,7 @@ class DefaultController extends Controller
 
 		if($topdf!=null)
 		{
-			$this->layout='//layouts/pdf';
+			$this->layout='/layouts/pdf';
 		}
 
 		$scorings = array();

@@ -10,15 +10,15 @@
 
 <tr>
   <td><?php echo CHtml::encode($data->rep_id); ?></td>
-	<td><a href="#myModal-<?php echo CHtml::encode($data->id); ?>" data-toggle="modal" data-target="#myModal-<?php echo CHtml::encode($data->id); ?>"><strong><?php echo CHtml::encode($data->project_title); ?></strong></a></td>
-	<td><?php echo Chapter::model()->getChapter($data->chapter_id); ?></td>
-	<td><?php echo User::model()->getCompleteName2($data->account_id); ?></td>
-	<td><?php echo CHtml::encode(date('F d, Y', strtotime($data->date_upload))); ?></td>
+  <td><a href="#myModal-<?php echo CHtml::encode($data->id); ?>" data-toggle="modal" data-target="#myModal-<?php echo CHtml::encode($data->id); ?>"><strong><?php echo CHtml::encode($data->project_title); ?></strong></a></td>
+  <td><?php echo Chapter::model()->getChapter($data->chapter_id); ?></td>
+  <td><?php echo User::model()->getCompleteName2($data->account_id); ?></td>
+  <td><?php echo CHtml::encode(date('F d, Y', strtotime($data->date_upload))); ?></td>
   <td class="text-center"><?php echo CHtml::encode($data->score->qty); ?></td>
   <td class="text-center"><?php echo CHtml::encode($data->score->goal_status); ?></td>
   <td class="text-center"><?php echo CHtml::encode($data->score->criteria_status); ?></td>
-	<td class='text-center'>
-		<?php
+  <td class='text-center'>
+    <?php
       echo CHtml::link('<span class="fa fa-file-image-o" style="margin-right:3px;"></span>', array('/admin/default/viewprojphoto', 'id' => $data->id), array('title' => 'View Report', 'target'=>'_blank', 'style'=>'margin-right:3px;'));
 
       if($data->attendance_sheet != 0)
@@ -34,7 +34,7 @@
         <span class="fa fa-remove" style="margin-right:3px;"></span>
       </a>';
     ?>
-	</td>
+  </td>
 </tr>
 
 <!-- Modal -->
@@ -43,9 +43,9 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-	    <div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal">&times;</button>
-	    <div class="row">
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <div class="row">
         <div class="col-sm-4">
           <img src="<?php echo Yii::app()->baseUrl; ?>/images/report-logo.jpg"  style="margin-top:10px;"></img> 
         </div>
@@ -56,12 +56,12 @@
                   <small>This report highlights how JCI Active Citizen Framework is used to drive sustainable impact at local level. This Captures relevant information about our impact Stories of how we are providing opportunities to empower young people to create positive change locally.</small>
                 </strong>
                 <br/>
-                <a href="<?php echo Yii::app()->baseUrl; ?>/index.php/account/printreport/<?php echo $data->id; ?>" target="_blank" class="btn btn-primary btn-xs pull-right" style="margin-bottom:15px; margin-right:10px;"><i class="fa fa-print" style="margin-right:5px;"></i>Print Report</a>
+                <a href="<?php echo Yii::app()->baseUrl; ?>/index.php/admin/default/printreport?id=<?php echo $data->id; ?>" target="_blank" class="btn btn-primary btn-xs pull-right" style="margin-bottom:15px; margin-right:10px;"><i class="fa fa-print" style="margin-right:5px;"></i>Print Report</a>
               </p>
         </div>
       </div>
-	    </div>
-      	<div class="modal-body">
+      </div>
+        <div class="modal-body">
         <!-- <p>Some text in the modal.</p> -->
 
         <!-- name of LO chapter -->
@@ -69,40 +69,40 @@
         <div class="text-center" style="border-style: solid; padding: 10px;"><?php echo Chapter::model()->getChapter($data->chapter_id); ?></div>
         
         <!-- name of LO president -->
-      	<div class="col-lg-6 text-center" style="padding:0px;">
-      		<div style="background-color: grey; border-style: solid; padding: 10px;"><strong>Name of L.O. President</strong></div>
-      		<div style="border-style: solid; padding: 10px;"><?php echo User::model()->getCompleteName2($data->president_id); ?></div>
-      	</div>
+        <div class="col-lg-6 text-center" style="padding:0px;">
+          <div style="background-color: grey; border-style: solid; padding: 10px;"><strong>Name of L.O. President</strong></div>
+          <div style="border-style: solid; padding: 10px;"><?php echo User::model()->getCompleteName2($data->president_id); ?></div>
+        </div>
 
         <!-- name of project chairman -->
-      	<div class="col-lg-6 text-center" style="padding:0px;">
-      		<div style="background-color: grey; border-style: solid; padding: 10px;"><strong>Name of Project Chairman</strong></div>
-     			<div style="border-style: solid; padding: 10px;"><?php echo User::model()->getCompleteName2($data->chairman_id); ?></div>
-      	</div>
+        <div class="col-lg-6 text-center" style="padding:0px;">
+          <div style="background-color: grey; border-style: solid; padding: 10px;"><strong>Name of Project Chairman</strong></div>
+          <div style="border-style: solid; padding: 10px;"><?php echo User::model()->getCompleteName2($data->chairman_id); ?></div>
+        </div>
 
-      	<div class="row"></div>
+        <div class="row"></div>
 
         <!-- project title -->
-  	    <div class="text-center" style="background-color: grey; border-style: solid; padding: 10px;"><strong>Project Title</strong></div>
-       	<div class="text-center" style="border-style: solid; padding: 10px;"><?php echo CHtml::encode($data->project_title); ?></div>
+        <div class="text-center" style="background-color: grey; border-style: solid; padding: 10px;"><strong>Project Title</strong></div>
+        <div class="text-center" style="border-style: solid; padding: 10px;"><?php echo CHtml::encode($data->project_title); ?></div>
 
         <!-- key results area -->
-       	<div class="col-lg-4 text-center" style="padding:0px;">
-      		<div style="background-color: grey; border-style: solid; padding: 10px;"><strong>Key Result Area</strong></div>
-      		<div style="border-style: solid; padding: 10px; height:100px;"><strong><?php echo PeaCategory::model()->getCat($data->rep_id); ?></strong></div>
-      	</div>
+        <div class="col-lg-4 text-center" style="padding:0px;">
+          <div style="background-color: grey; border-style: solid; padding: 10px;"><strong>Key Result Area</strong></div>
+          <div style="border-style: solid; padding: 10px; height:100px;"><strong><?php echo PeaCategory::model()->getCat($data->rep_id); ?></strong></div>
+        </div>
 
         <!-- category -->
-      	<div class="col-lg-3 text-center" style="padding:0px;">
-      		<div style="background-color: grey; border-style: solid; padding: 10px;"><strong>Category</strong></div>
-      		<div style="border-style: solid; padding: 10px; height:100px;"><small><strong><?php echo PeaSubcat::model()->getSubCat($data->rep_id); ?></strong></small></div>
-      	</div>
+        <div class="col-lg-3 text-center" style="padding:0px;">
+          <div style="background-color: grey; border-style: solid; padding: 10px;"><strong>Category</strong></div>
+          <div style="border-style: solid; padding: 10px; height:100px;"><small><strong><?php echo PeaSubcat::model()->getSubCat($data->rep_id); ?></strong></small></div>
+        </div>
 
         <!-- reference code -->
-      	<div class="col-lg-3 text-center" style="padding:0px;">
-      		<div style="background-color: grey; border-style: solid; padding: 10px;"><strong>JCIPEA Reference Code[1]</strong></div>
-      		<div style="border-style: solid; padding: 10px; height:100px;"><strong><?php echo CHtml::encode($data->rep_id); ?></strong></div>
-      	</div>
+        <div class="col-lg-3 text-center" style="padding:0px;">
+          <div style="background-color: grey; border-style: solid; padding: 10px;"><strong>JCIPEA Reference Code[1]</strong></div>
+          <div style="border-style: solid; padding: 10px; height:100px;"><strong><?php echo CHtml::encode($data->rep_id); ?></strong></div>
+        </div>
 
         <!-- quantity if provided -->
         <div class="col-lg-2 text-center" style="padding:0px;">
@@ -110,7 +110,7 @@
           <div style="border-style: solid; padding: 10px; height:100px;"><strong><?php echo CHtml::encode($data->score->qty); ?></strong></div>
         </div>
 
-      	<div class="row"></div>
+        <div class="row"></div>
 
         <!-- description -->
         <div class="text-center" style="background-color: grey; border-style: solid; padding: 10px;"><strong>Description</strong></div>
@@ -186,7 +186,7 @@
           <img src="<?php echo Yii::app()->baseUrl; ?>/jcipea_reports/<?php echo Chapter::model()->getAreaNo($data->chapter_id); ?>/<?php echo PeaReports::model()->getReportPictures($data->fileupload_id); ?>" class="img-responsive" />
         </div>
 
-    	</div>
+      </div>
       <div class="modal-footer">
         <a href="<?php echo Yii::app()->baseUrl; ?>/index.php/admin/default/printreport?id=<?php echo $data->id; ?>" target="_blank" class="btn btn-primary" style="margin-right:10px;"><i class="fa fa-print" style="margin-right:5px;"></i>Print Report</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

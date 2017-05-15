@@ -10,28 +10,28 @@
 
 <tr>
   <td><?php echo CHtml::encode($data->rep_id); ?></td>
-	<td>
+  <td>
     <a href="#myModal-<?php echo CHtml::encode($data->id); ?>" data-toggle="modal" data-target="#myModal-<?php echo CHtml::encode($data->id); ?>">
       <strong>
         <?php echo CHtml::encode($data->project_title); ?>
       </strong>
     </a>
   </td>
-	<td><?php echo Chapter::model()->getChapter($data->chapter_id); ?></td>
-	<td><?php echo User::model()->getCompleteName2($data->account_id); ?></td>
-	<td><?php echo CHtml::encode(date('F d, Y', strtotime($data->date_upload))); ?></td>
+  <td><?php echo Chapter::model()->getChapter($data->chapter_id); ?></td>
+  <td><?php echo User::model()->getCompleteName2($data->account_id); ?></td>
+  <td><?php echo CHtml::encode(date('F d, Y', strtotime($data->date_upload))); ?></td>
   <td class="text-center"><?php echo CHtml::encode($data->score->qty); ?></td>
   <td class="text-center"><?php echo CHtml::encode($data->score->goal_status); ?></td>
   <td class="text-center"><?php echo CHtml::encode($data->score->criteria_status); ?></td>
-	<td class='text-center'>
-		<?php
-			echo CHtml::link('<span class="fa fa-file-image-o" style="margin-right:3px;"></span>', array('/admin/default/viewprojphoto', 'id' => $data->id), array('title' => 'View Report', 'target'=>'_blank', 'style'=>'margin-right:3px;'));
+  <td class='text-center'>
+    <?php
+      echo CHtml::link('<span class="fa fa-file-image-o" style="margin-right:3px;"></span>', array('/admin/default/viewprojphoto', 'id' => $data->id), array('title' => 'View Report', 'target'=>'_blank', 'style'=>'margin-right:3px;'));
 
       if($data->attendance_sheet != 0)
       {
         echo CHtml::link('<span class="fa fa-list" style="margin-right:3px;"></span>', array('/admin/default/viewattsheet', 'id' => $data->id), array('title' => 'View Attendance Sheet', 'target'=>'_blank', 'style'=>'margin-right:3px;'));
       }
-			
+      
       echo '<a href="#statusModal-'.CHtml::encode($data->id).'" data-toggle="modal" data-target="#statusModal-'.CHtml::encode($data->id).'" style="margin-right:3px;">
         <span class="fa fa-info" style="margin-right:3px;"></span>
       </a>';
@@ -41,9 +41,9 @@
       echo '<a href="#rejectModal-'.CHtml::encode($data->id).'" data-toggle="modal" data-target="#rejectModal-'.CHtml::encode($data->id).'" style="margin-right:3px;">
         <span class="fa fa-remove" style="margin-right:3px;"></span>
       </a>';
-		?>
+    ?>
 
-	</td>
+  </td>
 </tr>
 
 <!-- Modal -->
@@ -65,7 +65,7 @@
                   <small>This report highlights how JCI Active Citizen Framework is used to drive sustainable impact at local level. This Captures relevant information about our impact Stories of how we are providing opportunities to empower young people to create positive change locally.</small>
                 </strong>
                 <br/>
-                <a href="<?php echo Yii::app()->baseUrl; ?>/index.php/account/printreport/<?php echo $data->id; ?>" target="_blank" class="btn btn-primary btn-xs pull-right" style="margin-bottom:15px; margin-right:10px;"><i class="fa fa-print" style="margin-right:5px;"></i>Print Report</a>
+                <a href="<?php echo Yii::app()->baseUrl; ?>/index.php/admin/default/printreport?id=<?php echo $data->id; ?>" target="_blank" class="btn btn-primary btn-xs pull-right" style="margin-bottom:15px; margin-right:10px;"><i class="fa fa-print" style="margin-right:5px;"></i>Print Report</a>
               </p>
         </div>
       </div>
