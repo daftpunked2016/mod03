@@ -1,10 +1,8 @@
 <?php
 class RankScorer
 {
-	const BLUE = 10;
-	const GREEN = 40;
-	const YELLOW = 20;
-	const RED = 30;
+	public $percentages;
+
 	/**
 	* @var array
 	*
@@ -36,6 +34,7 @@ class RankScorer
 	public function __construct($area = null, $region_id = null, $count = null)
 	{	
 		ScoresStorage::setup();  
+		$this->loadPercentages();
 		$this->etraining_scores = ScoresStorage::$scores;
 
 		if($area == null) {
@@ -66,6 +65,15 @@ class RankScorer
 		$this->iterateChapter();
 		$this->sortChapters();
 		$this->getProperties($count);
+	}
+
+	public function loadPercentages()
+	{
+		$categories = EtrainingCategory::model()->findAll();
+
+		foreach($categories as $category) {
+			$this->percentages[$category->groupcolor] = $category->percentage;
+		}
 	}
 
 	public function scoreCollect($reports)
@@ -145,7 +153,8 @@ class RankScorer
 
 	private function getGroupPerc($group_name)
 	{
-		return @(constant('self::'.$group_name) / 100);
+		$percentage = $this->percentages[$group_name];
+		return @($percentage / 100);
 	}
 
 	private function sortChapters()

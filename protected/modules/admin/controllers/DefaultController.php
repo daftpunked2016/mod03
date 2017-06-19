@@ -182,7 +182,7 @@ class DefaultController extends Controller
 			unset($_SESSION['token']);
 			
 		Yii::app()->getModule('admin')->user->logout(false);
-		Yii::app()->user->setFlash('success', 'Logout Successful.');
+		Yii::app()->user->setFlash('success', 'Logout Successful');
 		$this->redirect(Yii::app()->getModule('admin')->user->loginUrl);
 	}
 

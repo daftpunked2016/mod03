@@ -19,15 +19,13 @@ class AdminIdentity extends CUserIdentity
 	{
 		$username = strtolower($this->username);
 		$account=Account::model()->isActive()->isAuth2()->find('LOWER(username)="'.$username.'"');
-		if($account===null)
+		 
+		if($account===null) { 
 			Yii::app()->user->setFlash('error', 'Email / Password is Invalid');	
-		else if(!$account->validatePassword($this->password))
-		{
+		} else if(!$account->validatePassword($this->password)) {
 			echo $account->validatePassword($this->password);
 			Yii::app()->user->setFlash('error', 'Email / Password is Invalid');	
-		}
-		else
-		{
+		} else {
 			$this->_id=$account->id;
 			$this->username=$account->username;
 			$this->setState('roles', $account->getRole());

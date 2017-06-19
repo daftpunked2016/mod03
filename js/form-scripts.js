@@ -32,7 +32,7 @@ $(document).ready(function(){
         $(this).val('');
         alert("The image you are trying to upload exceeds the Maximum file size limit.")
       }
-  });
+    });
 
     //LIST SUBCAT OF PEA
     $("#pea-category").change(function(){
